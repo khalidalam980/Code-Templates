@@ -1,8 +1,11 @@
-class SGTree{
+#include <bits/stdc++.h>
+using namespace std;
+ 
+class SegmentTree{
 private:
     vector<int> seg;
 public:
-    SGTree(int n){
+    SegmentTree(int n){
         seg.resize(4*n+1);
     }
     
@@ -48,3 +51,32 @@ public:
         seg[ind] = min(seg[2*ind+1], seg[2*ind+2]);
     }
 };
+ 
+int main() {
+	int n, q;
+	cin>>n>>q;
+	vector<int> arr(n);
+	for(int i=0;i<n;i++) cin>>arr[i];
+	
+	SegmentTree sg(n);
+	sg.build(0, 0, n-1, arr);
+	
+	while(q--){
+	    int type;
+	    cin>>type;
+	    if(type == 1){
+	        int i, val;
+	        cin>>i>>val;
+	        i--;  // Convert 1-based index to 0-based
+	        sg.update(0, 0, n-1, i, val);
+	        arr[i] = val;
+	    }else{
+	        int l, r;
+	        cin>>l>>r;
+	        l--, r--;  // Convert 1-based index to 0-based
+	        cout<<sg.query(0, 0, n-1, l, r)<<endl;
+	    }
+	}
+	
+	return 0;
+}
